@@ -35,6 +35,7 @@ int isPuzzleSolved(int **board, int size) {
   return 1;
 }
 
+
 // Checks if the timer has run out indicating end of game; 1 if true, 0 if false
 int isGameOver(int stage) {
   if(stage == 5) return 0;
@@ -57,6 +58,7 @@ int determineSize(int stage) {
       return 0; break;
   }
 }
+
 
 // For now, display board on the terminal to visuallize the algorithm
 void displayBoard(int **board, int size) {
