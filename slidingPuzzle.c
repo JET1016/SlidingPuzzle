@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
+#include <string.h>
 
 /* constants */
 #define up_move 'w'
@@ -35,13 +36,40 @@ int isPuzzleSolved(int **board, int size) {
   return 1;
 }
 
+
 // For now, display board on the terminal to visuallize the algorithm
 void displayBoard(int **board, int size) {
+  // Create borders
+  char border_1[200] = "";
+  char border_2[200] = "";
+  char init_space_1[5] = "  ";
+  char init_space_2[5] = " ";
+  char mid_space_1[10] = "       ";
+  char mid_space_2[10] = "     ";
+  char box[10] = "|     |";
+  char top[10] = "_____";
+  strcat(border_1, init_space_1);
+  strcat(border_2, init_space_2);
+  for(i=0; i <size; i++) {
+    strcat(border_1, top);
+    strcat(border_2, box);
+    strcat(border_1, mid_space_1);
+    strcat(border_2, mid_space_2);
+  }
+
+  // Print puzzle 
   for(i=0; i<size; i++) {
+    printf("%s\n", border_1);
+    printf("%s\n", border_2);
+    printf(" ");
     for(j=0; j<size; j++) {
-      printf("%d ", board[i][j]);
+      if(board[i][j] != 0) printf("|  %d  |", board[i][j]);
+      else printf("|     |");
+      printf("     ");
     }
     printf("\n");
+    printf("%s\n", border_2);
+    printf("%s\n", border_1);
   } 
 }
 
