@@ -25,7 +25,6 @@ int isPuzzleSolved(int **board, int size) {
   for(i=0; i<size; i++) {
     for(j=0; j<size; j++) {
       if(temp <= board[i][j]) { // check if the previous tile is less than the current tile
-        printf("%d %d\n", temp, board[i][j]);
         temp = board[i][j];
       } else {
         return 0; // return 0 if condition is not satisfied
