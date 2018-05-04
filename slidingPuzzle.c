@@ -110,19 +110,21 @@ int main() {
   current_y = 0;
   
   char move;
+    
   do {
-    displayBoard(board, size);   
+    displayBoard(board, size);
   
     // ask input from user (this is for now, we'll research more about key event handling)
     
-    printf("Enter your move [q to exit]: \n");
+    printf("Enter your move [q to exit]: ");
     scanf("%c", &move);
+    getchar();
     if(move == 'q') {
       printf("Thank you for playing! Bye!\n");
       break;
     }
+
     moveTile(move, board, size);
-    
   } while(isPuzzleSolved(board, size) != 1); // loop while puzzle is solved
   
   return 0;
