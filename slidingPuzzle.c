@@ -8,6 +8,7 @@
 #define down_move 's'
 #define left_move 'a'
 #define right_move 'd'
+#define time 60
 
 /* global variables */
 int temp, i, j, x, y, current_x, current_y;
@@ -35,10 +36,134 @@ int isPuzzleSolved(int **board, int size) {
   return 1;
 }
 
+// Checks if the timer has run out indicating end of game; 1 if true, 0 if false
+int isGameOver(int stage) {
+	if(stage == 5) return 0;
+	return 1;
+}
+
+int determineSize(int stage) {
+	switch(stage) {
+		case 1:
+			return 3; break;
+		case 2:
+			return 5; break;
+		case 3:
+			return 7; break;
+		case 4:
+			return 9; break;
+		case 5:
+			return 10; break;
+		default:
+			return 0; break;
+	}
+}
+
+void setTimeout(int milliseconds)
+{
+    // If milliseconds is less or equal to 0
+    // will be simple return from function without throw error
+    if (milliseconds <= 0) {
+        fprintf(stderr, "Count milliseconds for timeout is less or equal to 0\n");
+        return;
+    }
+
+    // a current time of milliseconds
+    int milliseconds_since = clock() * 1000 / CLOCKS_PER_SEC;
+
+    // needed count milliseconds of return from this timeout
+    int end = milliseconds_since + milliseconds;
+
+    // wait while until needed time comes
+    do {
+        milliseconds_since = clock() * 1000 / CLOCKS_PER_SEC;
+    } while (milliseconds_since <= end);
+}
+
+// Will display a number in a font
+void displayNumber(int number) {
+	switch(number) {
+  	case 0:
+      printf(" _____\n");
+      printf("| 	|\n");
+      printf("|     |\n");
+      printf("|     |\n");
+      printf(" _____");
+    	break;
+    case 1:
+      printf(" _____\n");
+      printf("|     |\n");
+      printf("|  1  |\n");
+      printf("|     |\n");
+      printf(" _____");
+    	break;
+    case 2:
+ 	  printf(" _____\n");
+      printf("|     |\n");
+      printf("|  2  |\n");
+      printf("|     |\n");
+      printf(" _____");
+    	break;
+    case 3:
+      printf(" _____\n");
+      printf("|     |\n");
+      printf("|  3  |\n");
+      printf("|     |\n");
+      printf(" _____");
+    	break;
+    case 4:
+      printf(" _____\n");
+      printf("|     |\n");
+      printf("|  4  |\n");
+      printf("|     |\n");
+      printf(" _____");
+    	break;
+    case 5:
+      printf(" _____\n");
+      printf("|     |\n");
+      printf("|  5  |\n");
+      printf("|     |\n");
+      printf(" _____");
+    	break;
+    case 6:
+      printf(" _____\n");
+      printf("|     |\n");
+      printf("|  6  |\n");
+      printf("|     |\n");
+      printf(" _____");
+    	break;
+    case 7:
+      printf(" _____\n");
+      printf("|     |\n");
+      printf("|  7  |\n");
+      printf("|     |\n");
+      printf(" _____");
+    	break;
+    case 8:
+      printf(" _____\n");
+      printf("|     |\n");
+      printf("|  8  |\n");
+      printf("|     |\n");
+      printf(" _____");
+    	break;
+    case 9:
+      printf(" _____\n");
+      printf("|     |\n");
+      printf("|  9  |\n");
+      printf("|     |\n");
+      printf(" _____");
+    	break;
+  }
+}
+
+
+
+
 // For now, display board on the terminal to visuallize the algorithm
 void displayBoard(int **board, int size) {
   for(i=0; i<size; i++) {
     for(j=0; j<size; j++) {
+      // displayNumber(board[i][j]);
       printf("%d ", board[i][j]);
     }
     printf("\n");
@@ -81,51 +206,67 @@ void moveTile(char move, int **board, int size) {
 
 // Main function
 int main() {
-  int **board;
-  int size = 3;
-
-  
-  // allocate memory space for board (stage one for now)
-    board = (int **)malloc(sizeof(int *)*size);
-    for (i=0; i<3; i++) {
-      board[i]= (int *)malloc(sizeof(int)*size);
-      
-    }
-  
-  // Assign random values to board   
-  board[0][0] = 9; //save space for initial position
-  srand(time(NULL)); 
-  for(i = 1; i < 9; i++) { // For numbers 1 to 8, 
-    // randomize position in board     
-    do{
-      x = rand() % 3;    
-      y = rand() % 3;  
-    } while(board[x][y] != 0);
-    board[x][y] = i;
-  }
-  
-  // update initial position
-  board[0][0] = 0;
-  current_x = 0;
-  current_y = 0;
-  
-  char move;
-    
+  int stage = 1;
   do {
-    displayBoard(board, size);
-  
-    // ask input from user (this is for now, we'll research more about key event handling)
-    
-    printf("Enter your move [q to exit]: ");
-    scanf("%c", &move);
-    getchar();
-    if(move == 'q') {
-      printf("Thank you for playing! Bye!\n");
-      break;
-    }
+  	  int **board;
+	  int size = determineSize(stage); // determine the board size depending on the stage
+	  int timer = time; // set initial value of timer to 60 seconds or 1 minute for stage one
 
-    moveTile(move, board, size);
-  } while(isPuzzleSolved(board, size) != 1); // loop while puzzle is solved
+	  // allocate memory space for board (stage one for now)
+	    board = (int **)malloc(sizeof(int *)*size);
+	    for (i=0; i<size; i++) {
+	      board[i]= (int *)malloc(sizeof(int)*size);
+	      
+	    }
+	  
+	  // Assign random values to board   
+	  board[0][0] = size*size; //save space for initial position
+	  // srand(time(NULL)); 
+	  for(i = 1; i < size*size; i++) { // For numbers 1 to 8, 
+	    // randomize position in board     
+	    do{
+	      x = rand() % size;    
+	      y = rand() % size;  
+	    } while(board[x][y] != 0);
+	    board[x][y] = i;
+	  }
+	  
+	  // update initial position
+	  board[0][0] = 0;
+	  current_x = 0;
+	  current_y = 0;
+	  
+	  char move;
+	    
+
+  	do {
+  		// erase the previous line and display remain of the delay
+        printf("Time left: %d\n", timer);
+  		displayBoard(board, size);
+  		// ask input from user (this is for now, we'll research more about key event handling)
+	    printf("Enter your move [q to exit]: ");
+	    scanf("%c", &move);
+	    getchar();
+	    if(move == 'q') {
+	      printf("Thank you for playing! Bye!\n");
+	      break;
+	    }
+
+  		moveTile(move, board, size);
+
+
+        // a timeout for display
+        setTimeout(1000);
+
+        // decrease the delay to 1
+        timer--;
+
+	} while (timer >= 0);
+
+	stage++;
+
+  } while(isGameOver(stage) != 0);	
+  
   
   return 0;
 }//end of main
