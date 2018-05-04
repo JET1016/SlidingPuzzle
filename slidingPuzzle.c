@@ -8,6 +8,7 @@
 #define down_move 's'
 #define left_move 'a'
 #define right_move 'd'
+#define chances 3
 
 /* global variables */
 int temp, i, j, x, y, current_x, current_y;
@@ -133,24 +134,25 @@ void moveTile(char move, int **board, int size) {
 // Main function
 int main() {
   int **board;
-  int size = 3;
+  int stage = 1, timer = 6000; // initialize stage and timer
+  int size = determineSize(stage); // determine the board size depending on the value of the stage
 
   
   // allocate memory space for board (stage one for now)
     board = (int **)malloc(sizeof(int *)*size);
-    for (i=0; i<3; i++) {
+    for (i=0; i<size; i++) {
       board[i]= (int *)malloc(sizeof(int)*size);
       
     }
   
   // Assign random values to board   
-  board[0][0] = 9; //save space for initial position
+  board[0][0] = size*size; //save space for initial position
   srand(time(NULL)); 
-  for(i = 1; i < 9; i++) { // For numbers 1 to 8, 
+  for(i = 1; i < size*size; i++) { // For numbers 1 to 8, 
     // randomize position in board     
     do{
-      x = rand() % 3;    
-      y = rand() % 3;  
+      x = rand() % size;    
+      y = rand() % size;  
     } while(board[x][y] != 0);
     board[x][y] = i;
   }
@@ -180,7 +182,9 @@ int main() {
 
     moveTile(move, board, size);
    
-  } while(clock() - start < 1000); // loop while puzzle is solved
+  } while((clock() - start) < timer*stage); // loop while puzzle is solved
   
+
+
   return 0;
 }//end of main
