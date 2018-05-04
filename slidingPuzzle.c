@@ -83,6 +83,7 @@ void moveTile(char move, int **board, int size) {
 int main() {
   int **board;
   int size = 3;
+
   
   // allocate memory space for board (stage one for now)
     board = (int **)malloc(sizeof(int *)*size);
@@ -108,20 +109,19 @@ int main() {
   current_x = 0;
   current_y = 0;
   
+  char move;
   do {
     displayBoard(board, size);   
   
     // ask input from user (this is for now, we'll research more about key event handling)
-    char move;
-    printf("Enter your move [q to exit]: ");
+    
+    printf("Enter your move [q to exit]: \n");
+    scanf("%c", &move);
     if(move == 'q') {
       printf("Thank you for playing! Bye!\n");
       break;
     }
-    scanf("%c", &move);
     moveTile(move, board, size);
- 
-
     
   } while(isPuzzleSolved(board, size) != 1); // loop while puzzle is solved
   
