@@ -25,7 +25,6 @@ int isPuzzleSolved(int **board, int size) {
   for(i=0; i<size; i++) {
     for(j=0; j<size; j++) {
       if(temp <= board[i][j]) { // check if the previous tile is less than the current tile
-        printf("%d %d\n", temp, board[i][j]);
         temp = board[i][j];
       } else {
         return 0; // return 0 if condition is not satisfied
@@ -84,6 +83,7 @@ void moveTile(char move, int **board, int size) {
 int main() {
   int **board;
   int size = 3;
+
   
   // allocate memory space for board (stage one for now)
     board = (int **)malloc(sizeof(int *)*size);
@@ -109,21 +109,22 @@ int main() {
   current_x = 0;
   current_y = 0;
   
+  char move;
+    
   do {
-    displayBoard(board, size);   
+    displayBoard(board, size);
   
     // ask input from user (this is for now, we'll research more about key event handling)
-    char move;
+    
     printf("Enter your move [q to exit]: ");
+    scanf("%c", &move);
+    getchar();
     if(move == 'q') {
       printf("Thank you for playing! Bye!\n");
       break;
     }
-    scanf("%c", &move);
-    moveTile(move, board, size);
- 
 
-    
+    moveTile(move, board, size);
   } while(isPuzzleSolved(board, size) != 1); // loop while puzzle is solved
   
   return 0;
