@@ -1,3 +1,10 @@
+/*
+  CMSC 125 Project: Sliding Puzzle 
+  Description: A program that implements the game sliding puzzle inside ICS-OS.
+  Date Finished: May 18, 2018
+  Authors: Malingan, Loria Roie Grace N.
+           Torres, Jem E.
+ */
 #include "../../sdk/dexsdk.h"
 #include "../../sdk/time.h"
 
